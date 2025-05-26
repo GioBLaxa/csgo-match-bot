@@ -132,7 +132,7 @@ DRAW_PHRASES = [
 PROMO_CODES = {
     "CSGO2025": {
         "points": 15,
-        "max_uses": 350,
+        "max_uses": 3500,
         "used": 0,
         "used_by": []
     },
@@ -329,7 +329,7 @@ async def show_stats(message: types.Message):
     if last_play:
         try:
             last_play_dt = datetime.fromisoformat(last_play)
-            time_left = timedelta(hours=3) - (datetime.now() - last_play_dt)
+            time_left = timedelta(hours=12) - (datetime.now() - last_play_dt)
             if time_left.total_seconds() > 0:
                 cooldown = f"⏳ До следующей игры: {format_timedelta(time_left)}"
             else:
@@ -369,7 +369,7 @@ async def help_handler(message: types.Message):
         "1. Выберите команду (Террористы/Спецназ)\n"
         "2. Бот определит результат матча\n"
         "3. Получайте очки и повышайте ранг\n"
-        "4. Играть можно 1 раз в 3 часа в каждом чате\n\n"
+        "4. Играть можно 1 раз в 12 часа в каждом чате\n\n"
         "<b>Система рангов:</b>\n"
         "• Ранги от Silver 1 до Challenger💎\n"
         "• За победы получаете очки (1-10 за победу)\n"
@@ -443,7 +443,7 @@ async def process_team_choice(message: types.Message, team: str):
     if player.get("last_play"):
         try:
             last_play = datetime.fromisoformat(player["last_play"])
-            time_left = timedelta(hours=3) - (datetime.now() - last_play)
+            time_left = timedelta(hours=12) - (datetime.now() - last_play)
             if time_left.total_seconds() > 0:
                 await message.reply(
                     f"⏳ До следующей игры осталось: {format_timedelta(time_left)}",
@@ -504,7 +504,7 @@ async def welcome_new_chat(message: types.Message):
                 "1. Выберите команду (Террористы/Спецназ)\n"
                 "2. Бот определит результат матча\n"
                 "3. Получайте очки и повышайте ранг\n"
-                "4. Играть можно 1 раз в 3 часа в каждом чате\n\n"
+                "4. Играть можно 1 раз в 12 часа в каждом чате\n\n"
                 "<b>Система рангов:</b>\n"
                 "• Ранги от Silver 1 до Challenger💎\n"
                 "• За победы получаете очки (1-10 за победу)\n"
