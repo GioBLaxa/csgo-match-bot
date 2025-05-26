@@ -1,0 +1,12 @@
+{
+  "CSGO2025": {
+    "points": 15,
+    "max_uses": 250,
+    "used": 0
+  },
+  "HEADSHOT": {
+    "points": 10,
+    "max_uses": 5,
+    "used": 0
+  } 
+}
