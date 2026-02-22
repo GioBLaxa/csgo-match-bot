@@ -26,10 +26,8 @@ WIN_CHANCE = 60
 DRAW_CHANCE = 5
 LOSE_CHANCE = 100 - WIN_CHANCE - DRAW_CHANCE
 
-# Файл для хранения промокодов
 PROMO_FILE = "promo_codes.json"
 
-# Скины для кейсов с их редкостью и ценой
 SKINS = {
     "AK-47 | Красная линия": {"rarity": "uncommon", "price": 126, "image": "https://i.postimg.cc/FzDYdG7v/Chat-GPT-Image-28-2025-20-43-48.png"},
     "AK-47 | Прямо с завода": {"rarity": "uncommon", "price": 100, "image": "https://i.postimg.cc/63X4KnJr/Chat-GPT-Image-29-2025-11-45-01.png"},
@@ -47,7 +45,6 @@ SKINS = {
     "Desert Eagle | Самородок": {"rarity": "rare", "price": 180, "image": "https://i.postimg.cc/8c0JQWPb/Chat-GPT-Image-29-2025-11-03-56.png"}
 }
 
-# Кейсы с их содержимым и ценой
 CASES = {
     "weapon_case": {
         "name": "Оружейный кейс",
@@ -84,12 +81,10 @@ CASES = {
             "AWP | История о пьяном драконе",
             "Desert Eagle | Самородок",
             "AK-47 | Прямо с завода"
-            
         ]
     }
 }
 
-# Вероятности выпадения по редкости
 RARITY_PROBABILITIES = {
     "common": 45,
     "uncommon": 30,
@@ -97,13 +92,11 @@ RARITY_PROBABILITIES = {
     "legendary": 5
 }
 
-# Проверка скинов при старте
 for case_id, case_data in CASES.items():
     for skin in case_data["contains"]:
         if skin not in SKINS:
             logging.error(f"❌ В кейсе '{case_data['name']}' указан несуществующий скин: '{skin}'")
 
-# Загрузка промокодов из файла
 def load_promo_codes():
     try:
         if os.path.exists(PROMO_FILE):
@@ -114,7 +107,6 @@ def load_promo_codes():
         logging.error(f"Ошибка загрузки промокодов: {e}")
         return {}
 
-# Сохранение промокодов в файл
 def save_promo_codes(promo_codes):
     try:
         with open(PROMO_FILE, "w") as f:
@@ -122,7 +114,6 @@ def save_promo_codes(promo_codes):
     except Exception as e:
         logging.error(f"Ошибка сохранения промокодов: {e}")
 
-# Проверка срока действия промокода
 def is_promo_valid(promo_info):
     if not promo_info:
         return False
@@ -141,14 +132,14 @@ RANKS = {
     25: "Silver 4",
     35: "Gold Nova 1",
     45: "Gold Nova 2",
-   60:"Gold Nova 3",
-    75:"Gold Nova 4",
-    90:"Master Guardian 1",
-  110: "Master Guardian 2",
-    130: "DMG",     
+    60: "Gold Nova 3",
+    75: "Gold Nova 4",
+    90: "Master Guardian 1",
+    110: "Master Guardian 2",
+    130: "DMG",
     150: "LE",
     180: "LEM",
-    210:"Supreme",
+    210: "Supreme",
     230: "Global Elite",
     260: "Faceit 1",
     290: "Faceit 2",
@@ -178,7 +169,7 @@ WIN_PHRASES = {
         "CT win! Mission accomplished! ✅",
         "Спецназ рулит! Терры что с лицом ?👮",
         "GG, теры в шоке от этой прикормки",
-        "флэш, флэш бадэнг, флэш бадэнг э дэнс Флэш, флэш бадэнг, бэнг э дэнг э дэнс", 
+        "флэш, флэш бадэнг, флэш бадэнг э дэнс Флэш, флэш бадэнг, бэнг э дэнг э дэнс",
         "Позвоните в МЧС — я только что сжёг пятерых!"
     ]
 }
@@ -211,59 +202,64 @@ PROMO_CODES = {
         "used_by": []
     },
     "HEADSHOT": {
-        "points": 55, 
+        "points": 55,
         "max_uses": 350,
         "used": 0,
         "used_by": []
     },
     "SASAPIDR": {
-        "points": 520, 
+        "points": 520,
         "max_uses": 1,
         "used": 0,
         "used_by": []
-         },
-        "HENDAYGOVNO": {
-        "points": 500, 
+    },
+    "HENDAYGOVNO": {
+        "points": 500,
         "max_uses": 10,
         "used": 0,
         "used_by": []
-            },
-        "TURKFUNK": {
-        "points": 500, 
+    },
+    "TURKFUNK": {
+        "points": 500,
         "max_uses": 10,
         "used": 0,
         "used_by": []
     }
 }
 
+# --- Вспомогательная функция удаления сообщений ---
+async def safe_delete(chat_id, message_id):
+    """Удаляет сообщение, игнорируя ошибки если уже удалено"""
+    try:
+        await bot.delete_message(chat_id=chat_id, message_id=message_id)
+    except Exception:
+        pass
+
 # --- Клавиатуры ---
 def get_team_keyboard():
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+    return InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="💣 Террористы", callback_data="team_t"),
             InlineKeyboardButton(text="🛡️ Спецназ", callback_data="team_ct")
         ]
     ])
-    return keyboard
 
 def get_main_menu():
-    keyboard = ReplyKeyboardMarkup(
+    return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="🎮 Сыграть матч"), KeyboardButton(text="📊 Моя статистика")],
             [KeyboardButton(text="🏆 Топ игроков"), KeyboardButton(text="🎁 Открыть кейс"), KeyboardButton(text="❓ Помощь")]
         ],
         resize_keyboard=True
     )
-    return keyboard
 
 def get_choice_menu():
-    keyboard = ReplyKeyboardMarkup(
+    return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="💣 Террористы"), KeyboardButton(text="🛡️ Спецназ"), KeyboardButton(text="🔙 Назад")]
         ],
         resize_keyboard=True
     )
-    return keyboard
 
 def get_cases_menu():
     buttons = []
@@ -297,7 +293,6 @@ def get_next_rank(wins):
     sorted_ranks = sorted(RANKS.items())
     for i, (threshold, rank) in enumerate(sorted_ranks):
         if wins < threshold:
-            prev_threshold = sorted_ranks[i-1][0] if i > 0 else 0
             prev_rank = sorted_ranks[i-1][1] if i > 0 else "Silver 1"
             return prev_rank, threshold - wins
     return sorted_ranks[-1][1], 0
@@ -356,7 +351,7 @@ async def promo_handler(message: types.Message):
         return
 
     user_id = str(message.from_user.id)
-    
+
     if user_id in PROMO_CODES[promo_code]["used_by"]:
         await message.reply("⚠️ Вы уже использовали этот промокод!")
         return
@@ -367,7 +362,7 @@ async def promo_handler(message: types.Message):
 
     chat_id = str(message.chat.id)
     bonus = PROMO_CODES[promo_code]["points"]
-    
+
     data = load_data()
     if chat_id not in data:
         data[chat_id] = {"players": {}}
@@ -377,10 +372,10 @@ async def promo_handler(message: types.Message):
     data[chat_id]["players"][user_id]["points"] += bonus
     PROMO_CODES[promo_code]["used"] += 1
     PROMO_CODES[promo_code]["used_by"].append(user_id)
-    
+
     save_data(data)
     save_promo_uses()
-    
+
     await message.reply(
         f"🎉 Промокод активирован!\n"
         f"+{bonus} очков\n"
@@ -404,12 +399,16 @@ async def choose_ct(message: types.Message):
 async def play_handler(message: types.Message):
     if not await is_group_chat(message):
         return
+    # Удаляем сообщение пользователя
+    await safe_delete(message.chat.id, message.message_id)
     await message.answer("Выберите команду:", reply_markup=get_choice_menu())
 
 @dp.message(F.text.in_(["💣 Террористы", "🛡️ Спецназ"]))
 async def team_handler(message: types.Message):
     if not await is_group_chat(message):
         return
+    # Удаляем сообщение пользователя с выбором команды
+    await safe_delete(message.chat.id, message.message_id)
     team = "Terrorists" if message.text == "💣 Террористы" else "Counter-Terrorists"
     await process_team_choice(message, team)
 
@@ -417,27 +416,31 @@ async def team_handler(message: types.Message):
 async def back_handler(message: types.Message):
     if not await is_group_chat(message):
         return
+    # Удаляем сообщение пользователя
+    await safe_delete(message.chat.id, message.message_id)
     await message.answer("Главное меню:", reply_markup=get_main_menu())
 
 @dp.message(Command('stats'))
 @dp.message(F.text == "📊 Моя статистика")
 async def show_stats(message: types.Message):
     if not await is_group_chat(message):
-        return 
-    
+        return
+    # Удаляем сообщение пользователя
+    await safe_delete(message.chat.id, message.message_id)
+
     data = load_data()
     chat_id = str(message.chat.id)
     user_id = str(message.from_user.id)
-    
+
     if chat_id not in data or user_id not in data[chat_id].get("players", {}):
-        await message.reply("Вы еще не играли в этом чате!", reply_markup=get_main_menu())
+        await message.answer("Вы еще не играли в этом чате!", reply_markup=get_main_menu())
         return
-    
+
     player = data[chat_id]["players"][user_id]
     wins = player.get("wins", 0)
     points = player.get("points", 0)
     rank, wins_needed = get_next_rank(wins)
-    
+
     last_play = player.get("last_play")
     if last_play:
         try:
@@ -451,8 +454,9 @@ async def show_stats(message: types.Message):
             cooldown = "⏳ Время кулдауна неизвестно"
     else:
         cooldown = "✅ Можно играть сейчас"
-    
-    await message.reply(
+
+    # Статистика остаётся навсегда
+    await message.answer(
         f"📊 <b>Ваша статистика:</b>\n\n"
         f"🏅 Текущий ранг: {rank}\n"
         f"⭐ Очки: {points}\n"
@@ -467,7 +471,9 @@ async def show_stats(message: types.Message):
 async def help_handler(message: types.Message):
     if not await is_group_chat(message):
         return
-    
+    # Удаляем сообщение пользователя
+    await safe_delete(message.chat.id, message.message_id)
+
     help_text = (
         "🎮 <b>CS:GO Match Bot - Помощь</b>\n"
         "<b>👉 Поддержи проект донатом-https://boosty.to/rankgrinder_bot</b>\n\n"
@@ -493,35 +499,36 @@ async def help_handler(message: types.Message):
         "• Чем дороже кейс - тем лучше скины\n"
         "• Редкие скины выпадают редко"
     )
-    
-    await message.answer(
-        help_text,
-        reply_markup=get_main_menu(),
-        parse_mode="HTML"
-    )
+
+    # Помощь удаляется через 30 секунд
+    sent = await message.answer(help_text, reply_markup=get_main_menu(), parse_mode="HTML")
+    await asyncio.sleep(30)
+    await safe_delete(message.chat.id, sent.message_id)
 
 @dp.message(Command('top'))
 @dp.message(F.text == "🏆 Топ игроков")
 async def show_top(message: types.Message):
     if not await is_group_chat(message):
         return
-    
+    # Удаляем сообщение пользователя
+    await safe_delete(message.chat.id, message.message_id)
+
     data = load_data()
     chat_id = str(message.chat.id)
-    
+
     if chat_id not in data or not data[chat_id].get("players"):
-        await message.reply("В этом чате еще никто не играл!", reply_markup=get_main_menu())
+        await message.answer("В этом чате еще никто не играл!", reply_markup=get_main_menu())
         return
-    
+
     players = sorted(
-    data[chat_id]["players"].items(),
-    key=lambda x: (x[1].get("wins", 0), x[1].get("points", 0)),  # Сначала wins, потом points
-    reverse=True
-)[:10]
-    
+        data[chat_id]["players"].items(),
+        key=lambda x: (x[1].get("wins", 0), x[1].get("points", 0)),
+        reverse=True
+    )[:10]
+
     team = random.choice(["NAVI", "Virtus pro", "Gambit", "Faze"])
     top_text = f"🏆 {team} | <b>Топ игроков:</b>\n\n"
-    
+
     for i, (user_id, stats) in enumerate(players, 1):
         try:
             user = await bot.get_chat_member(chat_id, int(user_id))
@@ -529,46 +536,54 @@ async def show_top(message: types.Message):
         except Exception as e:
             logging.error(f"Ошибка получения пользователя {user_id}: {e}")
             name = stats.get("username", f"Игрок {user_id[-4:]}")
-        
+
         points = stats.get("points", 0)
         wins = stats.get("wins", 0)
         rank = get_next_rank(wins)[0]
         top_text += f"{i}. {name} - {points} очков | {wins} побед (ранг: {rank})\n"
-    
-    await message.reply(top_text, reply_markup=get_main_menu(), parse_mode="HTML")
+
+    # Топ остаётся навсегда
+    await message.answer(top_text, reply_markup=get_main_menu(), parse_mode="HTML")
 
 @dp.message(Command('open'))
 @dp.message(F.text == "🎁 Открыть кейс")
 async def open_case_handler(message: types.Message):
     if not await is_group_chat(message):
         return
-    
-    await message.answer("🎁 <b>Выберите кейс для открытия:</b>", 
-                        reply_markup=get_cases_menu(), 
-                        parse_mode="HTML")
+    # Удаляем сообщение пользователя
+    await safe_delete(message.chat.id, message.message_id)
+
+    await message.answer(
+        "🎁 <b>Выберите кейс для открытия:</b>",
+        reply_markup=get_cases_menu(),
+        parse_mode="HTML"
+    )
 
 @dp.callback_query(lambda c: c.data.startswith('case_'))
 async def process_case_callback(callback_query: types.CallbackQuery):
-    case_id = callback_query.data[5:]  # Убираем 'case_' из callback_data
+    case_id = callback_query.data[5:]
     if case_id not in CASES:
         await callback_query.answer("❌ Такого кейса не существует")
         return
-    
+
     case_data = CASES[case_id]
     user_id = str(callback_query.from_user.id)
     chat_id = str(callback_query.message.chat.id)
-    
+
     data = load_data()
     if chat_id not in data or user_id not in data[chat_id]["players"]:
         await callback_query.answer("❌ Вы еще не играли в этом чате!")
         return
-    
+
     player_points = data[chat_id]["players"][user_id].get("points", 0)
     if player_points < case_data["price"]:
         await callback_query.answer(f"❌ Недостаточно очков! Нужно {case_data['price']}")
         return
-    
-    # Показываем кейс перед открытием
+
+    # Удаляем сообщение "Выберите кейс" с кнопками
+    await safe_delete(chat_id, callback_query.message.message_id)
+
+    # Отправляем фото кейса с кнопкой "Открыть"
     await bot.send_photo(
         chat_id=callback_query.message.chat.id,
         photo=case_data["image"],
@@ -583,33 +598,36 @@ async def process_case_callback(callback_query: types.CallbackQuery):
 
 @dp.callback_query(lambda c: c.data.startswith('open_'))
 async def process_open_case(callback_query: types.CallbackQuery):
-    case_id = callback_query.data[5:]  # Убираем 'open_' из callback_data
+    case_id = callback_query.data[5:]
     if case_id not in CASES:
         await callback_query.answer("❌ Такого кейса не существует")
         return
-    
+
     case_data = CASES[case_id]
     user_id = str(callback_query.from_user.id)
     chat_id = str(callback_query.message.chat.id)
-    
+
     data = load_data()
     if chat_id not in data or user_id not in data[chat_id]["players"]:
         await callback_query.answer("❌ Вы еще не играли в этом чате!")
         return
-    
+
     player_points = data[chat_id]["players"][user_id].get("points", 0)
     if player_points < case_data["price"]:
         await callback_query.answer(f"❌ Недостаточно очков! Нужно {case_data['price']}")
         return
-    
+
+    # Удаляем фото кейса с кнопкой "Открыть"
+    await safe_delete(chat_id, callback_query.message.message_id)
+
     # Вычитаем стоимость кейса
     data[chat_id]["players"][user_id]["points"] -= case_data["price"]
     save_data(data)
-    
+
     # Выбираем скин с учетом редкости
     possible_skins = case_data["contains"]
     skins_with_rarity = []
-    
+
     for skin in possible_skins:
         try:
             skin_data = SKINS[skin]
@@ -617,26 +635,25 @@ async def process_open_case(callback_query: types.CallbackQuery):
         except KeyError:
             logging.error(f"Скин '{skin}' не найден в SKINS!")
             continue
-    
+
     if not skins_with_rarity:
         await callback_query.answer("❌ Ошибка: нет доступных скинов в кейсе")
         return
-    
-    # Выбираем скин по вероятности
+
     weights = [RARITY_PROBABILITIES[rarity] for _, rarity in skins_with_rarity]
     selected_skin = random.choices(
         population=[skin for skin, _ in skins_with_rarity],
         weights=weights,
         k=1
     )[0]
-    
+
     skin_data = SKINS[selected_skin]
-    
-    # Добавляем стоимость скина к балансу игрока
+
+    # Добавляем стоимость скина к балансу
     data[chat_id]["players"][user_id]["points"] += skin_data["price"]
     save_data(data)
-    
-    # Отправляем результат
+
+    # Отправляем результат дропа — НЕ удаляется!
     try:
         await bot.send_photo(
             chat_id=callback_query.message.chat.id,
@@ -651,32 +668,34 @@ async def process_open_case(callback_query: types.CallbackQuery):
         )
     except Exception as e:
         logging.error(f"Ошибка отправки изображения: {e}")
-        await callback_query.message.answer(
-            f"🎉 Поздравляем! Вы получили:\n\n"
-            f"🔫 <b>{selected_skin}</b>\n"
-            f"🏷 Редкость: {skin_data['rarity']}\n"
-            f"💵 Стоимость: {skin_data['price']} очков\n\n"
-            f"💳 Потрачено: {case_data['price']} очков\n"
-            f"💰 Баланс: {data[chat_id]['players'][user_id]['points']} очков",
+        await bot.send_message(
+            chat_id=callback_query.message.chat.id,
+            text=f"🎉 Поздравляем! Вы получили:\n\n"
+                 f"🔫 <b>{selected_skin}</b>\n"
+                 f"🏷 Редкость: {skin_data['rarity']}\n"
+                 f"💵 Стоимость: {skin_data['price']} очков\n\n"
+                 f"💳 Потрачено: {case_data['price']} очков\n"
+                 f"💰 Баланс: {data[chat_id]['players'][user_id]['points']} очков",
             parse_mode="HTML"
         )
-    
+
     await callback_query.answer()
 
 @dp.callback_query(lambda c: c.data == "back_to_main")
 async def back_to_main_menu(callback_query: types.CallbackQuery):
-    await callback_query.message.edit_reply_markup(reply_markup=None)
+    # Удаляем сообщение с кнопками кейсов
+    await safe_delete(callback_query.message.chat.id, callback_query.message.message_id)
     await callback_query.message.answer("Главное меню:", reply_markup=get_main_menu())
     await callback_query.answer()
 
 async def process_team_choice(message: types.Message, team: str):
     if not await is_group_chat(message):
         return
-    
+
     data = load_data()
     chat_id = str(message.chat.id)
     user_id = str(message.from_user.id)
-    
+
     if chat_id not in data:
         data[chat_id] = {"players": {}}
     if user_id not in data[chat_id]["players"]:
@@ -685,30 +704,32 @@ async def process_team_choice(message: types.Message, team: str):
             "points": 0,
             "last_play": None,
         }
-    
+
     player = data[chat_id]["players"][user_id]
     player["username"] = message.from_user.username or message.from_user.first_name
+
     if player.get("last_play"):
         try:
             last_play = datetime.fromisoformat(player["last_play"])
             time_left = timedelta(hours=10) - (datetime.now() - last_play)
             if time_left.total_seconds() > 0:
-                await message.reply(
+                # Кулдаун удаляется через 10 секунд
+                sent = await message.answer(
                     f"⏳ До следующей игры осталось: {format_timedelta(time_left)}",
                     reply_markup=get_main_menu()
                 )
+                await asyncio.sleep(10)
+                await safe_delete(message.chat.id, sent.message_id)
                 return
         except Exception as e:
             logging.error(f"Ошибка проверки кулдауна: {e}")
-    
-    
-    # Используем наши настройки шансов
+
     result = random.choices(
         ["win", "lose", "draw"],
         weights=[WIN_CHANCE, LOSE_CHANCE, DRAW_CHANCE],
         k=1
     )[0]
-    
+
     if result == "win":
         wins = player.get("wins", 0) + 1
         player["wins"] = wins
@@ -725,13 +746,14 @@ async def process_team_choice(message: types.Message, team: str):
     else:
         phrase = random.choice(DRAW_PHRASES)
         outcome = f"{phrase}\nНичья! Очки не изменились ➖"
-    
+
     player["last_play"] = datetime.now().isoformat()
     save_data(data)
-    
+
     rank, wins_needed = get_next_rank(player["wins"])
-    
-    await message.reply(
+
+    # Результат матча — остаётся навсегда!
+    await message.answer(
         f"{outcome}\n\n"
         f"🏅 Текущий ранг: {rank}\n"
         f"⭐ Очки: {player['points']}\n"
@@ -753,26 +775,22 @@ async def welcome_new_chat(message: types.Message):
                 "• /promo и промокод- ввод промокода\n"
                 "• /top или кнопка 🏆 Топ игроков - топ игроков чата\n"
                 "• /open или кнопка 🎁 Открыть кейс - открыть кейс со скинами\n\n"
-                 "<b>Как играть:</b>\n"
-                 "1. Выберите команду (Террористы/Спецназ)\n"
-                 "2. Бот определит результат матча\n"
-                 "3. Получайте очки и повышайте ранг\n"
-                 "4. Играть можно 1 раз в 10 часов в каждом чате\n\n"
-                 "<b>Система рангов:</b>\n"
-                 "• Ранги от Silver 1 до Challenger💎\n"
-                 "• За победы получаете очки (1-15 за победу)\n"
-                 "• За поражения теряете очки (1-10 за поражение)\n"
-                 "• Ничья не изменяет количество очков\n\n"
-                 "<b>Система кейсов:</b>\n"
-                 "• Можно открывать кейсы за очки\n"
-                 "• Чем дороже кейс - тем лучше скины\n"
-                 "• Редкие скины выпадают редко"
+                "<b>Как играть:</b>\n"
+                "1. Выберите команду (Террористы/Спецназ)\n"
+                "2. Бот определит результат матча\n"
+                "3. Получайте очки и повышайте ранг\n"
+                "4. Играть можно 1 раз в 10 часов в каждом чате\n\n"
+                "<b>Система рангов:</b>\n"
+                "• Ранги от Silver 1 до Challenger💎\n"
+                "• За победы получаете очки (1-15 за победу)\n"
+                "• За поражения теряете очки (1-10 за поражение)\n"
+                "• Ничья не изменяет количество очков\n\n"
+                "<b>Система кейсов:</b>\n"
+                "• Можно открывать кейсы за очки\n"
+                "• Чем дороже кейс - тем лучше скины\n"
+                "• Редкие скины выпадают редко"
             )
-            await message.reply(
-                welcome_text,
-                reply_markup=get_main_menu(),
-                parse_mode="HTML"
-            )
+            await message.reply(welcome_text, reply_markup=get_main_menu(), parse_mode="HTML")
 
 # Инициализация при старте
 load_promo_uses()
