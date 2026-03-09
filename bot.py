@@ -232,19 +232,19 @@ PROMO_CODES = {
         "used": 0,
         "used_by": []
     },
-     "nastoyachiy_kalkhoznick": {
+     "nastoyachiykalkhoznick": {
         "points": 40,
         "max_uses": 6,
         "used": 0,
         "used_by": []
       },
-     "java_script_onelove": {
+     "javascriptonelove": {
         "points": 69,
         "max_uses": 16,
         "used": 0,
         "used_by": []
          },
-     "ia_gruzin_suka_bliat": {
+     "iagruzinsukabliat": {
         "points": 3,
         "max_uses": 16,
         "used": 0,
@@ -826,3 +826,4 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+
