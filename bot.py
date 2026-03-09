@@ -213,12 +213,19 @@ PROMO_CODES = {
         "used": 0,
         "used_by": []
     },
+    "HENDAYGOVNO": {
+        "points": 500,
+        "max_uses": 10,
+        "used": 0,
+        "used_by": []
+    },
     "HENDAYbolsheneGOVNO": {
         "points": 500,
         "max_uses": 10,
         "used": 0,
         "used_by": []
     },
+    
     "TURKFUNK": {
         "points": 500,
         "max_uses": 10,
@@ -729,7 +736,7 @@ async def process_team_choice(message: types.Message, team: str):
     if player.get("last_play"):
         try:
             last_play = datetime.fromisoformat(player["last_play"])
-            time_left = timedelta(hours=10) - (datetime.now() - last_play)
+            time_left = timedelta(hours=3) - (datetime.now() - last_play)
             if time_left.total_seconds() > 0:
                 # Кулдаун удаляется через 10 секунд
                 sent = await message.answer(
