@@ -213,7 +213,7 @@ PROMO_CODES = {
         "used": 0,
         "used_by": []
     },
-    "HENDAYGOVNO": {
+    "HENDAYbolsheneGOVNO": {
         "points": 500,
         "max_uses": 10,
         "used": 0,
