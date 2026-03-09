@@ -31,27 +31,8 @@
         "wins": 2,
         "points": 24,
         "last_play": "2025-05-26T16:30:01.816039",
-        "username": "Art’ur"
+        "username": "Artâ€™ur"
       }
-    }
-  },
-  "promo_uses": {
-    "CSGO2025": {
-      "points": 15,
-      "max_uses": 350,
-      "used": 1,
-      "used_by": [
-        "1753265873"
-      ]
-    },
-    "HEADSHOT": {
-      "points": 10,
-      "max_uses": 10,
-      "used": 7,
-      "used_by": [
-        "1753265873",
-        "1333595201"
-      ]
     }
   },
   "-4821299391": {
@@ -72,6 +53,66 @@
         "last_play": "2025-05-26T15:49:01.137428",
         "username": "George321123"
       }
+    }
+  },
+  "-1002721700624": {
+    "players": {
+      "1753265873": {
+        "wins": 1,
+        "points": 505,
+        "last_play": "2026-02-22T04:33:35.756386",
+        "username": "George321123"
+      }
+    }
+  },
+  "promo_uses": {
+    "CSGO2025": {
+      "points": 60,
+      "max_uses": 1500,
+      "used": 1,
+      "used_by": ["1753265873"]
+    },
+    "HEADSHOT": {
+      "points": 55,
+      "max_uses": 350,
+      "used": 7,
+      "used_by": ["1753265873", "1333595201"]
+    },
+    "SASAPIDR": {
+      "points": 520,
+      "max_uses": 1,
+      "used": 1,
+      "used_by": ["1753265873"]
+    },
+    "HENDAYGOVNO": {
+      "points": 500,
+      "max_uses": 10,
+      "used": 1,
+      "used_by": ["1753265873"]
+    },
+    "TURKFUNK": {
+      "points": 500,
+      "max_uses": 10,
+      "used": 0,
+      "used_by": []
+    },
+    "nastoyachiy_kalkhoznick": {
+      "points": 40,
+      "max_uses": 6,
+      "used": 0,
+      "used_by": []
+    },
+    "java_script_onelove": {
+      "points": 69,
+      "max_uses": 16,
+      "used": 0,
+      "used_by": []
+    },
+    "ia_gruzin_suka_bliat": {
+      "points": 3,
+      "max_uses": 16,
+      "used": 0,
+      "used_by": []
     }
   }
 }
