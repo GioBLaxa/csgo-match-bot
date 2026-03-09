@@ -224,6 +224,24 @@ PROMO_CODES = {
         "max_uses": 10,
         "used": 0,
         "used_by": []
+    },
+     "nastoyachiy_kalkhoznick": {
+        "points": 40,
+        "max_uses": 6,
+        "used": 0,
+        "used_by": []
+      },
+     "java_script_onelove": {
+        "points": 69,
+        "max_uses": 16,
+        "used": 0,
+        "used_by": []
+         },
+     "ia_gruzin_suka_bliat": {
+        "points": 3,
+        "max_uses": 16,
+        "used": 0,
+        "used_by": []
     }
 }
 
